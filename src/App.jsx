@@ -334,7 +334,11 @@ function MainAppContent() {
 
       {/* 2. ADMIN PORTAL */}
       {activePortal === "admin" && (
-        <AdminDashboard />
+        currentUser && currentUser.role === "admin" ? (
+          <AdminDashboard />
+        ) : (
+          <LoginPortal activePortal="admin" setActivePortal={setActivePortal} />
+        )
       )}
     </>
   );
