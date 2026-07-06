@@ -4,7 +4,7 @@ import {
   BarChart2, ShoppingCart, Wheat, Sparkles, ShieldAlert, Users, 
   BookOpen, User, Calendar, Plus, Edit, Trash2, Check, X, 
   Search, Sliders, Download, DollarSign, Layers, Tag, Eye,
-  Lock, Activity, Settings, RefreshCw, Send, ClipboardList, MapPin
+  Lock, Activity, Settings, RefreshCw, Send, ClipboardList, MapPin, AlertTriangle
 } from "lucide-react";
 
 export const AdminDashboard = () => {
