@@ -360,13 +360,10 @@ export const AdminDashboard = () => {
             { id: "products", label: "Organic Catalog", icon: <Layers size={16} /> },
             { id: "inventory", label: "Traceability Inventory", icon: <Activity size={16} /> },
             { id: "orders", label: "Orders Desk", icon: <ShoppingCart size={16} />, count: orders.filter(o => o.status === "pending").length },
-            { id: "customers", label: "VIP Segments", icon: <Users size={16} /> },
-            { id: "procurement", label: "Farmer Contracts", icon: <Wheat size={16} /> },
-            { id: "finance", label: "Payouts & Ledger", icon: <DollarSign size={16} /> },
+            { id: "customers", label: "Customer Accounts", icon: <Users size={16} /> },
             { id: "promotions", label: "Coupons & CMS", icon: <Tag size={16} /> },
             { id: "recipes", label: "Recipes Manager", icon: <BookOpen size={16} /> },
-            { id: "insights", label: "BI Chatbot Co-pilot", icon: <Sparkles size={16} /> },
-            { id: "audit", label: "Audit Action Register", icon: <Sliders size={16} /> }
+            { id: "insights", label: "BI Chatbot Co-pilot", icon: <Sparkles size={16} /> }
           ].map(menu => (
             <li 
               key={menu.id} 
@@ -722,7 +719,7 @@ export const AdminDashboard = () => {
         )}
 
         {/* TAB 6: FARMER PROCUREMENTS & SUPPLIER CONTRACTS */}
-        {activeTab === "procurement" && (
+        {activeTab === "_removed_procurement" && (
           <div>
             <h3 style={{ fontSize: "1.1rem", fontWeight: "700", marginBottom: "16px" }}>Farmer Sourcing Contracts</h3>
             
@@ -785,8 +782,8 @@ export const AdminDashboard = () => {
           </div>
         )}
 
-        {/* TAB 7: PAYOUTS & FINANCE LEDGER */}
-        {activeTab === "finance" && (
+        {/* TAB 7: PAYOUTS & FINANCE LEDGER - REMOVED */}
+        {activeTab === "_removed_finance" && (
           <div>
             <h3 style={{ fontSize: "1.1rem", fontWeight: "700", marginBottom: "16px" }}>Financial Ledger & Reconciliation</h3>
             
@@ -1049,30 +1046,8 @@ export const AdminDashboard = () => {
         )}
 
         {/* TAB 11: AUDIT REGISTERS */}
-        {activeTab === "audit" && (
-          <div>
-            <h3 style={{ fontSize: "1.1rem", fontWeight: "700", marginBottom: "16px" }}>Enterprise Audit Activity Logs</h3>
-            
-            <div style={{ backgroundColor: "#1e293b", border: "1px solid #334155", borderRadius: "10px", padding: "20px" }}>
-              <div style={{ display: "flex", justifyBetween: "true", fontSize: "0.75rem", color: "#94a3b8", borderBottom: "1px solid #334155", paddingBottom: "6px", marginBottom: "10px" }}>
-                <span>Traceable Session Registers</span>
-                <span>Active Database: pgAdmin 4 (VNatural)</span>
-              </div>
-              
-              <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-                {auditLogs.map((log, idx) => (
-                  <div key={idx} style={{ padding: "10px", backgroundColor: "#0f172a", borderRadius: "6px", fontSize: "0.75rem", display: "flex", justifyBetween: "true" }}>
-                    <div>
-                      <span style={{ color: "#0ea5e9", fontWeight: "700" }}>{log.actor}</span>: {log.action}
-                    </div>
-                    <div style={{ color: "#64748b", fontSize: "0.65rem" }}>
-                      {log.timestamp} | IP: {log.ip}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
+        {activeTab === "_removed_audit" && (
+          <div></div>
         )}
 
       </main>

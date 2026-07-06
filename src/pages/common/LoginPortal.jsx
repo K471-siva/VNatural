@@ -315,6 +315,26 @@ export const LoginPortal = ({ activePortal, setActivePortal }) => {
                 </button>
               </div>
             )}
+            {selectedRole === "admin" && (
+              <div style={{ textAlign: "center", marginTop: "10px", fontSize: "0.8rem", color: "#64748b",
+                padding: "12px", borderTop: "1px solid rgba(51,65,85,0.5)" }}>
+                New administrator?{" "}
+                <button
+                  type="button"
+                  onClick={() => setActivePortal("admin-register")}
+                  style={{
+                    background: "transparent",
+                    border: "none",
+                    color: "#a78bfa",
+                    fontWeight: "700",
+                    cursor: "pointer",
+                    textDecoration: "underline"
+                  }}
+                >
+                  Create Admin Account →
+                </button>
+              </div>
+            )}
           </form>
         ) : (
           /* REGISTRATION / SIGN UP FORM */

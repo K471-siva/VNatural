@@ -12,6 +12,7 @@ import { Cart } from "./pages/customer/Cart";
 import { Checkout } from "./pages/customer/Checkout";
 import { Profile } from "./pages/customer/Profile";
 import { AdminDashboard } from "./pages/admin/AdminDashboard";
+import { AdminRegisterPage } from "./pages/admin/AdminRegisterPage";
 import { FarmerPortal } from "./pages/farmer/FarmerPortal";
 import { WarehousePortal } from "./pages/warehouse/WarehousePortal";
 import { DeliveryPortal } from "./pages/delivery/DeliveryPortal";
@@ -339,6 +340,17 @@ function MainAppContent() {
         ) : (
           <LoginPortal activePortal="admin" setActivePortal={setActivePortal} />
         )
+      )}
+
+      {/* 3. ADMIN REGISTRATION — new admin account creation */}
+      {activePortal === "admin-register" && (
+        <AdminRegisterPage
+          onSuccess={(user) => {
+            // After successful registration, route new admin to their customer storefront
+            setActivePortal("admin");
+          }}
+          onBackToLogin={() => setActivePortal("admin")}
+        />
       )}
     </>
   );
