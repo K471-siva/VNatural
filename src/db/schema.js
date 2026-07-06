@@ -84,9 +84,37 @@ export const initDB = () => {
   }
 };
 
-// Generic read/write helpers
-const read = (key) => JSON.parse(localStorage.getItem(key)) || [];
-const write = (key, data) => localStorage.setItem(key, JSON.stringify(data));
+// Generic read/write helpers with tenant isolation support
+const getActiveTenantPrefix = () => {
+  const tenant = localStorage.getItem("vnatural_active_tenant");
+  // Default admin (u_admin_1) sees default seeded database, other admins get prefix
+  if (!tenant || tenant === "u_admin_1") return "";
+  return tenant + "_";
+};
+
+const read = (key) => {
+  if (key === KEYS.USERS) {
+    return JSON.parse(localStorage.getItem(key)) || [];
+  }
+  const prefix = getActiveTenantPrefix();
+  const val = localStorage.getItem(prefix + key);
+  if (val === null) {
+    // If tenant key does not exist yet and a prefix is active, start with empty array
+    if (prefix) return [];
+    // Fallback to standard key
+    return JSON.parse(localStorage.getItem(key)) || [];
+  }
+  return JSON.parse(val) || [];
+};
+
+const write = (key, data) => {
+  if (key === KEYS.USERS) {
+    localStorage.setItem(key, JSON.stringify(data));
+    return;
+  }
+  const prefix = getActiveTenantPrefix();
+  localStorage.setItem(prefix + key, JSON.stringify(data));
+};
 
 export const getAuthHeaders = () => {
   const token = localStorage.getItem("vnatural_auth_token");

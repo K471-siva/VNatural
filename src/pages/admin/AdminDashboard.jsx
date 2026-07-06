@@ -675,14 +675,17 @@ export const AdminDashboard = () => {
         {/* TAB 5: CUSTOMER DIRECTORY (VIP SEGMENTS) */}
         {activeTab === "customers" && (
           <div>
-            <h3 style={{ fontSize: "1.1rem", fontWeight: "700", marginBottom: "16px" }}>VIP Customer Segmentation</h3>
+            <h3 style={{ fontSize: "1.1rem", fontWeight: "700", marginBottom: "16px" }}>VIP Customer Segmentation & Logins Activity</h3>
             
             <div style={{ backgroundColor: "#1e293b", border: "1px solid #334155", borderRadius: "10px", padding: "20px" }}>
               <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.8rem" }}>
                 <thead>
                   <tr style={{ borderBottom: "1px solid #334155", color: "#94a3b8", textAlign: "left" }}>
-                    <th style={{ padding: "10px" }}>Customer Name</th>
+                    <th style={{ padding: "10px" }}>Customer Details</th>
                     <th style={{ padding: "10px" }}>Contact Email</th>
+                    <th style={{ padding: "10px" }}>Last Login</th>
+                    <th style={{ padding: "10px" }}>Login IP</th>
+                    <th style={{ padding: "10px" }}>Status</th>
                     <th style={{ padding: "10px" }}>Loyalty Points</th>
                     <th style={{ padding: "10px" }}>Wallet Balance</th>
                     <th style={{ padding: "10px" }}>Address List</th>
@@ -693,14 +696,30 @@ export const AdminDashboard = () => {
                   {users.filter(u => u.role === "customer").map(u => (
                     <tr key={u.id} style={{ borderBottom: "1px solid #33415533" }}>
                       <td style={{ padding: "10px" }}>
-                        <strong>{u.name}</strong>
-                        {u.loyaltyPoints > 200 && <span style={{ fontSize: "0.6rem", backgroundColor: "rgba(245,158,11,0.15)", color: "#f59e0b", padding: "1px 4px", marginLeft: "6px", borderRadius: "3px" }}>VIP</span>}
+                        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                          <img src={u.avatar || "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?q=80&w=50&auto=format&fit=crop"} style={{ width: "28px", height: "28px", borderRadius: "50%", objectFit: "cover" }} />
+                          <div>
+                            <strong>{u.name}</strong>
+                            {u.loyaltyPoints > 200 && <span style={{ fontSize: "0.6rem", backgroundColor: "rgba(245,158,11,0.15)", color: "#f59e0b", padding: "1px 4px", marginLeft: "6px", borderRadius: "3px" }}>VIP</span>}
+                          </div>
+                        </div>
                       </td>
                       <td style={{ padding: "10px" }}>{u.email}</td>
+                      <td style={{ padding: "10px", color: "var(--a-text-muted)" }}>{u.lastLogin || "Never"}</td>
+                      <td style={{ padding: "10px", color: "var(--a-text-muted)", fontFamily: "var(--font-mono)" }}>{u.loginIp || "—"}</td>
+                      <td style={{ padding: "10px" }}>
+                        {u.status === "online" ? (
+                          <span style={{ display: "inline-flex", alignItems: "center", gap: "6px", color: "#10b981", fontWeight: "700" }}>
+                            <span className="admin-live-dot" /> Online
+                          </span>
+                        ) : (
+                          <span style={{ color: "#64748b" }}>Offline</span>
+                        )}
+                      </td>
                       <td style={{ padding: "10px", color: "#10b981", fontWeight: "700" }}>{u.loyaltyPoints || 0} pts</td>
                       <td style={{ padding: "10px", color: "#0ea5e9", fontWeight: "700" }}>₹{u.walletBalance || 0}</td>
                       <td style={{ padding: "10px" }}>
-                        {u.addresses?.map(a => `${a.street}, ${a.area} (${a.pincode})`).join(" | ") || "No address slots"}
+                        {u.addresses?.map(a => `${a.street}, ` + a.area + (` (${a.pincode})`)).join(" | ") || "No address slots"}
                       </td>
                       <td style={{ padding: "10px" }}>
                         <button 
@@ -717,7 +736,7 @@ export const AdminDashboard = () => {
             </div>
           </div>
         )}
-
+        
         {/* TAB 6: FARMER PROCUREMENTS & SUPPLIER CONTRACTS */}
         {activeTab === "_removed_procurement" && (
           <div>
@@ -1055,7 +1074,7 @@ export const AdminDashboard = () => {
       {/* PRODUCT CREATOR MODAL */}
       {productModalOpen && (
         <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "rgba(0,0,0,0.85)", zIndex: 1000, display: "flex", alignItems: "center", justifyCenter: "center", padding: "20px" }}>
-          <div style={{ backgroundColor: "#1e293b", border: "1px solid #0ea5e9", borderRadius: "12px", width: "500px", padding: "24px", maxHeight: "90vh", overflowY: "auto", position: "relative" }}>
+          <div style={{ backgroundColor: "#1e293b", border: "1px solid #0ea5e9", borderRadius: "12px", width: "500px", padding: "24px", maxHeight: "90vh", overflowY: "auto", position: "relative", color: "#fff" }}>
             <button onClick={() => setProductModalOpen(false)} style={{ position: "absolute", right: "16px", top: "16px", backgroundColor: "transparent", border: "none", color: "#64748b", cursor: "pointer" }}>✕</button>
             <h4 style={{ color: "#fff", fontWeight: "800", marginBottom: "16px" }}>{selectedProduct ? "Modify Product SKU" : "Register Product SKU"}</h4>
             
@@ -1139,7 +1158,7 @@ export const AdminDashboard = () => {
       {/* RECIPE CREATOR MODAL */}
       {recipeModalOpen && (
         <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "rgba(0,0,0,0.85)", zIndex: 1000, display: "flex", alignItems: "center", justifyCenter: "center", padding: "20px" }}>
-          <div style={{ backgroundColor: "#1e293b", border: "1px solid #0ea5e9", borderRadius: "12px", width: "480px", padding: "24px", maxHeight: "90vh", overflowY: "auto", position: "relative" }}>
+          <div style={{ backgroundColor: "#1e293b", border: "1px solid #0ea5e9", borderRadius: "12px", width: "480px", padding: "24px", maxHeight: "90vh", overflowY: "auto", position: "relative", color: "#fff" }}>
             <button onClick={() => setRecipeModalOpen(false)} style={{ position: "absolute", right: "16px", top: "16px", backgroundColor: "transparent", border: "none", color: "#64748b", cursor: "pointer" }}>✕</button>
             <h4 style={{ color: "#fff", fontWeight: "800", marginBottom: "16px" }}>{selectedRecipe ? "Modify Meal Recipe" : "Register Meal Recipe"}</h4>
             

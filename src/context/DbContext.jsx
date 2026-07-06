@@ -294,7 +294,6 @@ export const DbProvider = ({ children }) => {
   };
 
   // Auth Operations
-  // Auth Operations
   const login = async (email, password) => {
     try {
       const res = await fetch("/api/auth/login", {
@@ -305,10 +304,22 @@ export const DbProvider = ({ children }) => {
       if (res.ok) {
         const data = await res.json();
         localStorage.setItem("vnatural_auth_token", data.token);
-        setCurrentUser(data.user);
-        setWishlist(getWishlist(data.user.id));
-        logSystemAction("USER_LOGIN", `${data.user.name} logged in as ${data.user.role}`);
-        return { success: true, user: data.user };
+        
+        const loggedUser = data.user;
+        loggedUser.lastLogin = new Date().toLocaleString();
+        loggedUser.loginIp = "192.168.43." + Math.floor(Math.random() * 254 + 1);
+        loggedUser.status = "online";
+        saveUser(loggedUser);
+
+        if (loggedUser.role === "admin") {
+          localStorage.setItem("vnatural_active_tenant", loggedUser.id);
+        }
+
+        setCurrentUser(loggedUser);
+        setWishlist(getWishlist(loggedUser.id));
+        logSystemAction("USER_LOGIN", `${loggedUser.name} logged in as ${loggedUser.role}`);
+        refreshData();
+        return { success: true, user: loggedUser };
       } else {
         const errorData = await res.json();
         console.warn("Auth Server rejected login request:", errorData.error);
@@ -320,12 +331,23 @@ export const DbProvider = ({ children }) => {
     // Hardcoded E2E mock switch fallbacks & local authenticate check
     const user = authenticateUser(email, password);
     if (user) {
+      user.lastLogin = new Date().toLocaleString();
+      user.loginIp = "192.168.43." + Math.floor(Math.random() * 254 + 1);
+      user.status = "online";
+      saveUser(user);
+
+      if (user.role === "admin") {
+        localStorage.setItem("vnatural_active_tenant", user.id);
+      }
+
       setCurrentUser(user);
       setWishlist(getWishlist(user.id));
       logSystemAction("USER_LOGIN", `${user.name} logged in as ${user.role} (local fallback)`);
+      refreshData();
       return { success: true, user };
     }
-    // Hardcoded E2E mock switch fallbacks
+    
+    // Fallback Mock roles
     if (email.toLowerCase() === "delivery.kalyan@gmail.com") {
       const mockDriver = {
         id: "u_delivery_1",
@@ -338,7 +360,12 @@ export const DbProvider = ({ children }) => {
         zone: "Secunderabad & Begumpet",
         avatar: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=150&auto=format&fit=crop"
       };
+      mockDriver.lastLogin = new Date().toLocaleString();
+      mockDriver.loginIp = "192.168.43.12";
+      mockDriver.status = "online";
+      saveUser(mockDriver);
       setCurrentUser(mockDriver);
+      refreshData();
       return { success: true, user: mockDriver };
     }
     if (email.toLowerCase() === "farmer.keshav@gmail.com") {
@@ -353,7 +380,12 @@ export const DbProvider = ({ children }) => {
         farmLocation: "Miryalaguda, Nalgonda, Telangana",
         avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=150&auto=format&fit=crop"
       };
+      mockFarmer.lastLogin = new Date().toLocaleString();
+      mockFarmer.loginIp = "192.168.43.15";
+      mockFarmer.status = "online";
+      saveUser(mockFarmer);
       setCurrentUser(mockFarmer);
+      refreshData();
       return { success: true, user: mockFarmer };
     }
     if (email.toLowerCase() === "warehouse.rama@vnatural.com") {
@@ -367,7 +399,12 @@ export const DbProvider = ({ children }) => {
         facility: "Central Warehouse Hub - Hyderabad",
         avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=150&auto=format&fit=crop"
       };
+      mockWarehouse.lastLogin = new Date().toLocaleString();
+      mockWarehouse.loginIp = "192.168.43.20";
+      mockWarehouse.status = "online";
+      saveUser(mockWarehouse);
       setCurrentUser(mockWarehouse);
+      refreshData();
       return { success: true, user: mockWarehouse };
     }
     if (email.toLowerCase() === "admin@vnatural.com") {
@@ -380,7 +417,13 @@ export const DbProvider = ({ children }) => {
         phone: "9900112233",
         avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=150&auto=format&fit=crop"
       };
+      mockAdmin.lastLogin = new Date().toLocaleString();
+      mockAdmin.loginIp = "192.168.43.10";
+      mockAdmin.status = "online";
+      saveUser(mockAdmin);
+      localStorage.setItem("vnatural_active_tenant", mockAdmin.id);
       setCurrentUser(mockAdmin);
+      refreshData();
       return { success: true, user: mockAdmin };
     }
     return { success: false, message: "Invalid email or password" };
@@ -389,12 +432,19 @@ export const DbProvider = ({ children }) => {
   const logout = () => {
     if (currentUser) {
       logSystemAction("USER_LOGOUT", `${currentUser.name} logged out`);
+      currentUser.status = "offline";
+      saveUser(currentUser);
     }
     localStorage.removeItem("vnatural_auth_token");
     setCurrentUser(null);
     setCart([]);
     setWishlist([]);
+    if (currentUser && currentUser.role === "admin") {
+      localStorage.setItem("vnatural_active_tenant", "u_admin_1");
+    }
+    refreshData();
   };
+
 
   const updateProfile = (updatedUser) => {
     saveUser(updatedUser);

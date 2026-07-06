@@ -406,8 +406,8 @@ export const LoginPortal = ({ activePortal, setActivePortal }) => {
                 <div className="admin-input-group" style={{ marginBottom: 0 }}>
                   <label style={{ color: "#94a3b8" }}>Assigned Shift Hours</label>
                   <select className="admin-input" style={{ width: "100%", backgroundColor: "#0f172a", color: "#fff", border: "1px solid #334155" }} value={regShift} onChange={(e) => setRegShift(e.target.value)}>
-                    <option value="Day Shift (8 AM - 5 PM)">Day Shift (8 AM - 5 PM)</option>
-                    <option value="Night Shift (9 PM - 6 AM)">Night Shift (9 PM - 6 AM)</option>
+                    <option style={{ backgroundColor: "#1e293b", color: "#fff" }} value="Day Shift (8 AM - 5 PM)">Day Shift (8 AM - 5 PM)</option>
+                    <option style={{ backgroundColor: "#1e293b", color: "#fff" }} value="Night Shift (9 PM - 6 AM)">Night Shift (9 PM - 6 AM)</option>
                   </select>
                 </div>
               </>
