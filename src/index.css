@@ -1,6 +1,8 @@
-/* Reset and link global stylesheets */
+/* VNatural — Global Base (imported first by main.jsx) */
+/* All design tokens & component styles are in common.css */
 body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  background-color: #06090E; /* Default dark bg before CSS vars load */
 }

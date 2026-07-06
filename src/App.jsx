@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { DbProvider, useDb } from "./context/DbContext";
 import { PortalSwitcher } from "./components/common/PortalSwitcher";
 import { Stars } from "./components/common/Stars";
@@ -27,17 +27,26 @@ import "./styles/admin.css";
 import "./styles/portals.css";
 
 // Lucide Icons
-import { Leaf, ShoppingCart, User, Globe, LogOut, Sparkles } from "lucide-react";
+import { Leaf, ShoppingCart, User, Globe, LogOut, Sparkles, Sun, Moon } from "lucide-react";
 
 function MainAppContent() {
   const [activePortal, setActivePortal] = useState("customer");
   const [customerPage, setCustomerPage] = useState("home");
   const [selectedProductId, setSelectedProductId] = useState("");
+  const [theme, setTheme] = useState(() => localStorage.getItem("vn_theme") || "dark");
 
   const { language, setLanguage, cart, currentUser, logout, t, toast, setToast } = useDb();
 
+  // Apply theme to document and persist
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("vn_theme", theme);
+  }, [theme]);
+
+  const toggleTheme = () => setTheme(prev => prev === "dark" ? "light" : "dark");
+
   // Auto-dismiss real-time toast after 5 seconds
-  React.useEffect(() => {
+  useEffect(() => {
     if (toast) {
       const timer = setTimeout(() => {
         setToast(null);
@@ -47,7 +56,7 @@ function MainAppContent() {
   }, [toast, setToast]);
 
   // Handle Admin Portal URL redirection
-  React.useEffect(() => {
+  useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     if (params.get("portal") === "admin" || window.location.hash === "#/admin") {
       setActivePortal("admin");
@@ -169,8 +178,10 @@ function MainAppContent() {
           <header className="customer-header">
             <div className="container header-inner">
               <div className="logo-container" onClick={() => setCustomerPage("home")} style={{ cursor: "pointer" }}>
-                <Leaf className="logo-leaf" size={26} fill="var(--c-primary)" />
-                <span>VNatural</span>
+                <div className="logo-icon">
+                  <Leaf size={20} color="#000" fill="#000" />
+                </div>
+                <span><span className="logo-text-vn">V</span><span className="logo-text-atural">Natural</span></span>
               </div>
 
               <nav className="nav-links">
@@ -207,69 +218,52 @@ function MainAppContent() {
                 </button>
               </nav>
 
+              {/* Header Actions */}
               <div className="header-actions">
                 {/* Language Switcher */}
                 <button
                   onClick={() => setLanguage(language === "en" ? "te" : "en")}
                   style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "4px",
-                    fontWeight: "600",
-                    fontSize: "0.85rem",
+                    display: "flex", alignItems: "center", gap: "4px",
+                    fontWeight: "600", fontSize: "0.8rem",
                     color: "var(--c-primary)",
                     border: "1px solid var(--c-border)",
-                    padding: "4px 10px",
-                    borderRadius: "20px",
-                    backgroundColor: "#fff",
-                    cursor: "pointer"
+                    padding: "5px 12px", borderRadius: "20px",
+                    background: "var(--c-primary-dim)", cursor: "pointer",
+                    transition: "var(--transition)"
                   }}
                 >
-                  <Globe size={14} /> {language === "en" ? "English" : "తెలుగు"}
+                  <Globe size={13} /> {language === "en" ? "EN" : "తె"}
+                </button>
+
+                {/* Dark/Light Mode Toggle */}
+                <button className="theme-toggle-btn" onClick={toggleTheme} title={theme === "dark" ? "Switch to Light" : "Switch to Dark"}>
+                  {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
                 </button>
 
                 {/* Cart Icon */}
-                <button 
-                  onClick={() => setCustomerPage("cart")}
-                  style={{ position: "relative", padding: "6px", cursor: "pointer", color: "var(--c-primary)" }}
-                >
-                  <ShoppingCart size={22} />
+                <button className="cart-icon-btn" onClick={() => setCustomerPage("cart")}>
+                  <ShoppingCart size={20} />
                   {cartItemsCount > 0 && (
-                    <span style={{
-                      position: "absolute",
-                      top: "-2px",
-                      right: "-2px",
-                      backgroundColor: "var(--c-accent)",
-                      color: "#fff",
-                      borderRadius: "50%",
-                      width: "18px",
-                      height: "18px",
-                      fontSize: "0.7rem",
-                      fontWeight: "bold",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center"
-                    }}>
-                      {cartItemsCount}
-                    </span>
+                    <span className="cart-badge">{cartItemsCount}</span>
                   )}
                 </button>
 
-                {/* Customer Account Avatar */}
+                {/* Customer Account Avatar / Login */}
                 {currentUser ? (
                   <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                    <img 
-                      src={currentUser.avatar} 
-                      alt={currentUser.name} 
+                    <img
+                      src={currentUser.avatar}
+                      alt={currentUser.name}
                       onClick={() => setCustomerPage("profile")}
-                      style={{ width: "32px", height: "32px", borderRadius: "50%", cursor: "pointer", objectFit: "cover", border: "1.5px solid var(--c-primary)" }}
+                      className="header-user-avatar"
                     />
-                    <button onClick={logout} style={{ color: "var(--error)", padding: "4px", cursor: "pointer" }} title="Logout">
-                      <LogOut size={16} />
+                    <button onClick={logout} style={{ color: "var(--error)", padding: "4px", cursor: "pointer", display: "flex", alignItems: "center" }} title="Logout">
+                      <LogOut size={15} />
                     </button>
                   </div>
                 ) : (
-                  <button className="btn-primary" onClick={() => setCustomerPage("profile")} style={{ padding: "0.4rem 1rem", fontSize: "0.85rem" }}>
+                  <button className="btn-primary" onClick={() => setCustomerPage("profile")} style={{ padding: "0.5rem 1.2rem", fontSize: "0.85rem" }}>
                     <User size={14} /> {t("Login", "లాగిన్")}
                   </button>
                 )}
@@ -281,7 +275,6 @@ function MainAppContent() {
           <main style={{ flexGrow: 1, paddingBottom: "40px" }}>
             {renderCustomerPage()}
           </main>
-
           {/* AI Floating Chatbot widget */}
           <AiAssistantWidget />
 
@@ -290,10 +283,10 @@ function MainAppContent() {
             <div className="container">
               <div className="footer-grid">
                 <div className="footer-col">
-                  <h3 style={{ fontFamily: "var(--font-display)", fontWeight: "800", marginBottom: "10px", color: "var(--c-accent)", display: "flex", alignItems: "center", gap: "6px" }}>
-                    <Leaf size={18} fill="var(--c-accent)" /> VNatural Organics
+                  <h3 style={{ fontFamily: "var(--font-display)", fontWeight: "800", marginBottom: "12px", color: "var(--c-primary)", display: "flex", alignItems: "center", gap: "8px" }}>
+                    <Leaf size={18} fill="var(--c-primary)" /> VNatural Organics
                   </h3>
-                  <p style={{ fontSize: "0.85rem", opacity: 0.8, lineHeight: "1.6" }}>
+                  <p className="footer-brand-desc">
                     {t("Empowering health-conscious households with traceable, chemical-free farm staples. Our direct crop sourcing benefits local agriculture.",
                        "రసాయనాలు లేని స్వచ్ఛమైన సేంద్రీయ ఆహార ఉత్పత్తులు. స్థానిక వ్యవసాయాన్ని ప్రోత్సహించండి.")}
                   </p>
@@ -301,15 +294,15 @@ function MainAppContent() {
                 <div className="footer-col">
                   <h4>{t("Quick Links", "లింకులు")}</h4>
                   <ul>
-                    <li><button onClick={() => setCustomerPage("home")}>{t("Home Page", "హోమ్")}</button></li>
-                    <li><button onClick={() => setCustomerPage("catalog")}>{t("Organic Catalog", "కేటలాగ్")}</button></li>
-                    <li><button onClick={() => setCustomerPage("profile")}>{t("Subscriptions", "సబ్‌స్క్రిప్షన్స్")}</button></li>
-                    <li><button onClick={() => setCustomerPage("admin-login")} style={{ opacity: 0.6 }}>{t("Admin Portal", "అడ్మిన్ పోర్టల్")}</button></li>
+                    <li><button onClick={() => setCustomerPage("home")}>{t("Home", "హోమ్")}</button></li>
+                    <li><button onClick={() => setCustomerPage("catalog")}>{t("Organic Shop", "కేటలాగ్")}</button></li>
+                    <li><button onClick={() => setCustomerPage("recipes")}>{t("Recipes", "వంటకాలు")}</button></li>
+                    <li><button onClick={() => setCustomerPage("profile")}>{t("My Account", "నా అకౌంట్")}</button></li>
                   </ul>
                 </div>
                 <div className="footer-col">
-                  <h4>{t("Local Delivery Zones", "డెలివరీ ప్రాంతాలు")}</h4>
-                  <ul style={{ fontSize: "0.85rem", opacity: 0.8 }}>
+                  <h4>{t("Delivery Zones", "డెలివరీ ప్రాంతాలు")}</h4>
+                  <ul>
                     <li>Madhapur, Hyderabad</li>
                     <li>Gachibowli, Hyderabad</li>
                     <li>Kondapur, Hyderabad</li>
@@ -317,16 +310,17 @@ function MainAppContent() {
                   </ul>
                 </div>
                 <div className="footer-col">
-                  <h4>{t("Support Channels", "సహాయం")}</h4>
-                  <p style={{ fontSize: "0.85rem", opacity: 0.8 }}>
-                    Email: support@vnatural.com<br />
-                    Phone: +91 99001 12233
-                  </p>
+                  <h4>{t("Support", "సహాయం")}</h4>
+                  <ul>
+                    <li>support@vnatural.com</li>
+                    <li>+91 99001 12233</li>
+                    <li><button onClick={() => setActivePortal("admin")} style={{ opacity: 0.5, fontSize: "0.8rem" }}>Admin Portal</button></li>
+                  </ul>
                 </div>
               </div>
-
-              <div style={{ borderTop: "1px solid rgba(255,255,255,0.1)", paddingTop: "20px", textAlign: "center", fontSize: "0.8rem", opacity: 0.7 }}>
-                &copy; 2026 VNatural Organic Sourcing Platform. All rights reserved.
+              <div className="footer-bottom">
+                <span>© 2026 VNatural Organic Sourcing Platform. All rights reserved.</span>
+                <span style={{ color: "var(--c-primary)", fontSize: "0.8rem", fontWeight: "600" }}>🌿 100% Organic · Farm to Table</span>
               </div>
             </div>
           </footer>
