@@ -59,31 +59,26 @@ function MainAppContent() {
       case "cart":
         return <Cart setPage={setCustomerPage} />;
       case "checkout":
-        return <Checkout setPage={setCustomerPage} />;
+        return currentUser ? <Checkout setPage={setCustomerPage} /> : <LoginPortal activePortal="customer" setActivePortal={setActivePortal} />;
       case "profile":
-        return <Profile setPage={setCustomerPage} setSelectedProductId={setSelectedProductId} />;
+        return currentUser ? <Profile setPage={setCustomerPage} setSelectedProductId={setSelectedProductId} /> : <LoginPortal activePortal="customer" setActivePortal={setActivePortal} />;
       case "recipes":
         return <Recipes />;
       case "ai-nutritionist":
         return <AiNutritionist />;
+      case "admin-login":
+        return <LoginPortal activePortal="admin" setActivePortal={setActivePortal} />;
       default:
         return <Home setPage={setCustomerPage} setSelectedProductId={setSelectedProductId} />;
     }
   };
 
-  if (!currentUser) {
-    return (
-      <>
-        <PortalSwitcher activePortal={activePortal} setActivePortal={setActivePortal} />
-        <LoginPortal activePortal={activePortal} setActivePortal={setActivePortal} />
-      </>
-    );
-  }
-
   return (
     <>
       {/* Dev Portal Switcher HUD */}
-      <PortalSwitcher activePortal={activePortal} setActivePortal={setActivePortal} />
+      {currentUser?.role === "admin" && (
+        <PortalSwitcher activePortal={activePortal} setActivePortal={setActivePortal} />
+      )}
 
       {/* Real-time Toast Banner */}
       {toast && (
@@ -159,7 +154,7 @@ function MainAppContent() {
 
       {/* 1. CUSTOMER PORTAL */}
       {activePortal === "customer" && (
-        <div className="customer-layout" style={{ paddingTop: "36px" }}>
+        <div className="customer-layout" style={{ paddingTop: currentUser?.role === "admin" ? "36px" : 0 }}>
           {/* Storefront Header */}
           <header className="customer-header">
             <div className="container header-inner">
@@ -299,6 +294,7 @@ function MainAppContent() {
                     <li><button onClick={() => setCustomerPage("home")}>{t("Home Page", "హోమ్")}</button></li>
                     <li><button onClick={() => setCustomerPage("catalog")}>{t("Organic Catalog", "కేటలాగ్")}</button></li>
                     <li><button onClick={() => setCustomerPage("profile")}>{t("Subscriptions", "సబ్‌స్క్రిప్షన్స్")}</button></li>
+                    <li><button onClick={() => setCustomerPage("admin-login")} style={{ opacity: 0.6 }}>{t("Admin Portal", "అడ్మిన్ పోర్టల్")}</button></li>
                   </ul>
                 </div>
                 <div className="footer-col">
@@ -330,21 +326,6 @@ function MainAppContent() {
       {/* 2. ADMIN PORTAL */}
       {activePortal === "admin" && (
         <AdminDashboard />
-      )}
-
-      {/* 3. FARMER PORTAL */}
-      {activePortal === "farmer" && (
-        <FarmerPortal />
-      )}
-
-      {/* 4. WAREHOUSE PORTAL */}
-      {activePortal === "warehouse" && (
-        <WarehousePortal />
-      )}
-
-      {/* 5. DELIVERY PORTAL */}
-      {activePortal === "delivery" && (
-        <DeliveryPortal />
       )}
     </>
   );

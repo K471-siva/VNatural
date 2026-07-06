@@ -192,22 +192,10 @@ export const DbProvider = ({ children }) => {
       })
       .catch(err => {
         console.warn("Could not restore session:", err.message);
-        // Fallback default customer auto login if no valid session
-        const allUsers = getUsers();
-        const defaultCustomer = allUsers.find(u => u.email === "customer@gmail.com");
-        if (defaultCustomer) {
-          setCurrentUser(defaultCustomer);
-          setWishlist(getWishlist(defaultCustomer.id));
-        }
+        setCurrentUser(null);
       });
     } else {
-      // Auto-login default customer to start with a smooth UX
-      const allUsers = getUsers();
-      const defaultCustomer = allUsers.find(u => u.email === "customer@gmail.com");
-      if (defaultCustomer) {
-        setCurrentUser(defaultCustomer);
-        setWishlist(getWishlist(defaultCustomer.id));
-      }
+      setCurrentUser(null);
     }
 
     // Setup Socket.io real-time connection

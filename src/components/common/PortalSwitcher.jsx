@@ -22,30 +22,6 @@ export const PortalSwitcher = ({ activePortal, setActivePortal }) => {
       role: "admin",
       icon: <Shield size={16} />,
       color: "var(--a-primary)"
-    },
-    {
-      id: "farmer",
-      name: "Farmer Portal",
-      email: "farmer.keshav@gmail.com",
-      role: "farmer",
-      icon: <Wheat size={16} />,
-      color: "var(--p-primary)"
-    },
-    {
-      id: "warehouse",
-      name: "Warehouse Ops",
-      email: "warehouse.rama@vnatural.com",
-      role: "warehouse",
-      icon: <Package size={16} />,
-      color: "#f59e0b"
-    },
-    {
-      id: "delivery",
-      name: "Delivery Driver",
-      email: "delivery.kalyan@gmail.com",
-      role: "delivery",
-      icon: <Truck size={16} />,
-      color: "#3b82f6"
     }
   ];
 
@@ -53,12 +29,6 @@ export const PortalSwitcher = ({ activePortal, setActivePortal }) => {
     // Directly log in as the mock user for that portal to avoid timing delays
     if (portal.role === "admin") {
       await login(portal.email, "admin123");
-    } else if (portal.role === "farmer") {
-      await login(portal.email, "farmer123");
-    } else if (portal.role === "warehouse") {
-      await login(portal.email, "warehouse123");
-    } else if (portal.role === "delivery") {
-      await login(portal.email, "delivery123");
     } else {
       await login(portal.email, "customer123");
     }
