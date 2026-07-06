@@ -840,6 +840,8 @@ app.post("/api/system-logs", async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
+});
+
 // Register secure endpoint
 app.post("/api/auth/register", async (req, res) => {
   const { email, password, role, name, phone, addresses } = req.body;
