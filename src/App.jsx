@@ -45,6 +45,15 @@ function MainAppContent() {
     }
   }, [toast, setToast]);
 
+  // Handle Admin Portal URL redirection
+  React.useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("portal") === "admin" || window.location.hash === "#/admin") {
+      setActivePortal("admin");
+      setCustomerPage("admin-login");
+    }
+  }, []);
+
   const cartItemsCount = cart.reduce((sum, item) => sum + item.quantity, 0);
 
   // Render Customer storefront view

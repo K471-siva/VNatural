@@ -11,7 +11,7 @@ export const AdminDashboard = () => {
   const {
     products, orders, subscriptions, procurements, warehouseLogs, users,
     approveProcurement, rejectProcurement, updateOrderDeliveryStatus,
-    editOrCreateProduct, recipes, editOrCreateRecipe, updateProfile,
+    editOrCreateProduct, deleteProduct, recipes, editOrCreateRecipe, updateProfile,
     currentUser, editSubscription, logout, t
   } = useDb();
 
@@ -240,6 +240,20 @@ export const AdminDashboard = () => {
     alert("Catalog SKU updated successfully!");
   };
 
+  const handleDeleteProduct = (productId) => {
+    if (window.confirm("Are you sure you want to permanently delete this product from the catalog?")) {
+      deleteProduct(productId);
+      const newLog = {
+        timestamp: new Date().toLocaleString(),
+        actor: currentUser?.name || "Admin",
+        action: `Deleted product SKU ID: ${productId}`,
+        ip: "192.168.1.42"
+      };
+      setAuditLogs([newLog, ...auditLogs]);
+      alert("Product SKU deleted successfully!");
+    }
+  };
+
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -417,7 +431,7 @@ export const AdminDashboard = () => {
             <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "16px", marginBottom: "24px" }}>
               {[
                 { label: "Delivered Sales Revenue", val: `₹${totalSalesVal.toLocaleString("en-IN")}`, desc: "Synced with pgAdmin 4", col: "#10b981" },
-                { label: "Active pantry plans", val: activeSubsCount, desc: `${subscriptions.length} users registered`, col: "#0ea5e9" },
+                { label: "Registered Customers", val: users.filter(u => u.role === "customer").length, desc: `${users.filter(u => u.role === "customer").length} total logins`, col: "#0ea5e9" },
                 { label: "Pending order dispatches", val: pendingOrdersCount, desc: "Awaiting picker checklists", col: "#f59e0b" },
                 { label: "low stock alert items", val: lowStockCount, desc: "Safety threshold < 50 kg", col: "#ef4444" }
               ].map((kpi, idx) => (
@@ -508,6 +522,11 @@ export const AdminDashboard = () => {
                         <button onClick={() => handleOpenProductModal(p)} style={{ background: "none", border: "none", color: "#0ea5e9", cursor: "pointer", marginRight: "10px" }} title="Edit">
                           <Edit size={14} />
                         </button>
+                        {adminRole === "Super Admin" || adminRole === "Inventory Manager" ? (
+                          <button onClick={() => handleDeleteProduct(p.id)} style={{ background: "none", border: "none", color: "#ef4444", cursor: "pointer" }} title="Delete">
+                            <Trash2 size={14} />
+                          </button>
+                        ) : null}
                       </td>
                     </tr>
                   ))}

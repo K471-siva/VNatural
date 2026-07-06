@@ -674,6 +674,18 @@ app.post("/api/products", async (req, res) => {
   }
 });
 
+// Delete product
+app.delete("/api/products/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    await pool.query("DELETE FROM vnatural_products WHERE id = $1", [id]);
+    broadcastDbUpdate("PRODUCT_DELETED", { id });
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // Sync orders
 app.post("/api/orders", async (req, res) => {
   const o = req.body;

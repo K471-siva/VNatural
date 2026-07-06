@@ -25,6 +25,7 @@ import {
   saveUser,
   logSystemAction,
   saveProduct,
+  deleteProduct,
   logWarehouseMovement,
   getAuthHeaders
 } from "../db/schema";
@@ -141,9 +142,9 @@ export const DbProvider = ({ children }) => {
     for (const item of queue) {
       try {
         const response = await fetch(item.url, {
-          method: "POST",
+          method: item.method || "POST",
           headers: getAuthHeaders(),
-          body: JSON.stringify(item.body)
+          body: item.body ? JSON.stringify(item.body) : null
         });
 
         if (response.ok) {
@@ -619,6 +620,11 @@ export const DbProvider = ({ children }) => {
     refreshData();
   };
 
+  const deleteProductItem = (productId) => {
+    deleteProduct(productId);
+    refreshData();
+  };
+
   // Delivery Portal Actions
   const handleJobStatusChange = (jobId, status) => {
     updateDeliveryJobStatus(jobId, status);
@@ -719,6 +725,7 @@ export const DbProvider = ({ children }) => {
         rejectProcurement,
         updateOrderDeliveryStatus,
         editOrCreateProduct,
+        deleteProduct: deleteProductItem,
         handleJobStatusChange,
         toggleSubStatus,
         editOrCreateRecipe,

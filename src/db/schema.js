@@ -96,11 +96,11 @@ export const getAuthHeaders = () => {
   };
 };
 
-export const safeFetchSync = (url, payload) => {
+export const safeFetchSync = (url, payload, method = "POST") => {
   fetch(url, {
-    method: "POST",
+    method: method,
     headers: getAuthHeaders(),
-    body: JSON.stringify(payload)
+    body: payload ? JSON.stringify(payload) : null
   })
   .catch((err) => {
     console.warn(`Postgres sync failed for ${url}. Queueing request in offline outbox. Error:`, err.message);
@@ -108,6 +108,7 @@ export const safeFetchSync = (url, payload) => {
     queue.push({
       id: "mutation_" + Date.now() + "_" + Math.random().toString(36).substr(2, 5),
       url,
+      method,
       body: payload,
       timestamp: new Date().toISOString()
     });
@@ -137,6 +138,9 @@ export const deleteProduct = (id) => {
   const filtered = products.filter((p) => p.id !== id);
   write(KEYS.PRODUCTS, filtered);
   logSystemAction("PRODUCT_DELETE", `Product with ID ${id} deleted.`);
+  
+  // PostgreSQL sync delete
+  safeFetchSync(`/api/products/${id}`, null, "DELETE");
 };
 
 // User Actions
