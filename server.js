@@ -112,27 +112,35 @@ let pool = null;
 
 // Initialize PostgreSQL database and tables
 async function initPostgres() {
-  console.log("Connecting to PostgreSQL to check database status...");
-  
-  // Connect to default 'postgres' database first to check/create 'VNatural'
-  const tempPool = new Pool({ ...dbConfig, database: "postgres" });
-  try {
-    const res = await tempPool.query("SELECT 1 FROM pg_database WHERE datname = 'VNatural'");
-    if (res.rowCount === 0) {
-      console.log("Database 'VNatural' not found. Creating database...");
-      await tempPool.query('CREATE DATABASE "VNatural"');
-      console.log("Database 'VNatural' created successfully!");
-    } else {
-      console.log("Database 'VNatural' already exists.");
+  if (process.env.DATABASE_URL) {
+    console.log("Connecting directly to managed PostgreSQL using DATABASE_URL...");
+    pool = new Pool({
+      connectionString: process.env.DATABASE_URL,
+      ssl: { rejectUnauthorized: false }
+    });
+  } else {
+    console.log("Connecting to PostgreSQL to check database status...");
+    
+    // Connect to default 'postgres' database first to check/create 'VNatural'
+    const tempPool = new Pool({ ...dbConfig, database: "postgres" });
+    try {
+      const res = await tempPool.query("SELECT 1 FROM pg_database WHERE datname = 'VNatural'");
+      if (res.rowCount === 0) {
+        console.log("Database 'VNatural' not found. Creating database...");
+        await tempPool.query('CREATE DATABASE "VNatural"');
+        console.log("Database 'VNatural' created successfully!");
+      } else {
+        console.log("Database 'VNatural' already exists.");
+      }
+    } catch (err) {
+      console.error("Error checking/creating database:", err.message);
+    } finally {
+      await tempPool.end();
     }
-  } catch (err) {
-    console.error("Error checking/creating database:", err.message);
-  } finally {
-    await tempPool.end();
-  }
 
-  // Connect to the actual 'VNatural' database
-  pool = new Pool({ ...dbConfig, database: "VNatural" });
+    // Connect to the actual 'VNatural' database
+    pool = new Pool({ ...dbConfig, database: "VNatural" });
+  }
 
   // Create tables if they do not exist
   try {
