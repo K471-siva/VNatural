@@ -34,7 +34,7 @@ export const Cart = ({ setPage }) => {
                   display: "flex",
                   alignItems: "center",
                   gap: "16px",
-                  backgroundColor: "#fff",
+                  backgroundColor: "var(--c-bg-pure)",
                   padding: "16px",
                   borderRadius: "12px",
                   border: "1px solid var(--c-border)",
@@ -129,7 +129,7 @@ export const Cart = ({ setPage }) => {
           {/* Cart summary box */}
           <div>
             <div style={{
-              backgroundColor: "#fff",
+              backgroundColor: "var(--c-bg-pure)",
               border: "1px solid var(--c-border)",
               borderRadius: "16px",
               padding: "24px",
@@ -165,7 +165,7 @@ export const Cart = ({ setPage }) => {
         <div style={{
           textAlign: "center",
           padding: "80px 20px",
-          backgroundColor: "#fff",
+          backgroundColor: "var(--c-bg-pure)",
           borderRadius: "16px",
           border: "1px solid var(--c-border)"
         }}>

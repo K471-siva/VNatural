@@ -282,45 +282,116 @@ function MainAppContent() {
           <footer className="customer-footer">
             <div className="container">
               <div className="footer-grid">
+                {/* Brand col */}
                 <div className="footer-col">
-                  <h3 style={{ fontFamily: "var(--font-display)", fontWeight: "800", marginBottom: "12px", color: "var(--c-primary)", display: "flex", alignItems: "center", gap: "8px" }}>
-                    <Leaf size={18} fill="var(--c-primary)" /> VNatural Organics
+                  <h3 style={{
+                    fontFamily: "var(--font-display)",
+                    fontWeight: "800",
+                    marginBottom: "12px",
+                    color: "var(--c-primary)",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
+                    fontSize: "1.15rem"
+                  }}>
+                    <Leaf size={18} fill="var(--c-primary)" /> VNatural
                   </h3>
                   <p className="footer-brand-desc">
-                    {t("Empowering health-conscious households with traceable, chemical-free farm staples. Our direct crop sourcing benefits local agriculture.",
-                       "రసాయనాలు లేని స్వచ్ఛమైన సేంద్రీయ ఆహార ఉత్పత్తులు. స్థానిక వ్యవసాయాన్ని ప్రోత్సహించండి.")}
+                    {t(
+                      "Fresh choices for a healthier and better life. Empowering health-conscious households with traceable, chemical-free farm staples.",
+                      "ఆరోగ్యకరమైన మరియు మెరుగైన జీవితానికి తాజా ఎంపిక. రసాయనాలు లేని స్వచ్ఛమైన ఆహారం."
+                    )}
                   </p>
+                  {/* Social Icons */}
+                  <div className="footer-social-row">
+                    {["f", "ig", "tw", "yt"].map((s, i) => (
+                      <div key={i} className="footer-social-icon">
+                        {s === "f" && "f"}
+                        {s === "ig" && "in"}
+                        {s === "tw" && "x"}
+                        {s === "yt" && "▶"}
+                      </div>
+                    ))}
+                  </div>
                 </div>
+
+                {/* Company col */}
                 <div className="footer-col">
-                  <h4>{t("Quick Links", "లింకులు")}</h4>
+                  <h4>{t("Company", "కంపెనీ")}</h4>
                   <ul>
-                    <li><button onClick={() => setCustomerPage("home")}>{t("Home", "హోమ్")}</button></li>
-                    <li><button onClick={() => setCustomerPage("catalog")}>{t("Organic Shop", "కేటలాగ్")}</button></li>
-                    <li><button onClick={() => setCustomerPage("recipes")}>{t("Recipes", "వంటకాలు")}</button></li>
-                    <li><button onClick={() => setCustomerPage("profile")}>{t("My Account", "నా అకౌంట్")}</button></li>
+                    <li><button onClick={() => setCustomerPage("home")}>{t("About Us", "మా గురించి")}</button></li>
+                    <li><button onClick={() => setCustomerPage("home")}>{t("Our Farms", "మా ఫార్మ్లు")}</button></li>
+                    <li><button onClick={() => setCustomerPage("home")}>{t("Careers", "కెరీర్")}</button></li>
+                    <li><button onClick={() => setCustomerPage("home")}>{t("Press", "పత్రికా")}</button></li>
                   </ul>
                 </div>
+
+                {/* Customer Service col */}
                 <div className="footer-col">
-                  <h4>{t("Delivery Zones", "డెలివరీ ప్రాంతాలు")}</h4>
+                  <h4>{t("Customer Service", "కస్టమర్ సేవ")}</h4>
                   <ul>
-                    <li>Madhapur, Hyderabad</li>
-                    <li>Gachibowli, Hyderabad</li>
-                    <li>Kondapur, Hyderabad</li>
-                    <li>Begumpet, Secunderabad</li>
+                    <li><button onClick={() => setCustomerPage("home")}>{t("Contact Us", "సంప్రదించండి")}</button></li>
+                    <li><button onClick={() => setCustomerPage("home")}>{t("FAQs", "తరచుగా అడిగే ప్రశ్నలు")}</button></li>
+                    <li><button onClick={() => setCustomerPage("home")}>{t("Shipping & Delivery", "షిప్పింగ్ & డెలివరీ")}</button></li>
+                    <li><button onClick={() => setCustomerPage("home")}>{t("Returns", "రిటర్న్స్")}</button></li>
                   </ul>
                 </div>
+
+                {/* My Account col */}
                 <div className="footer-col">
-                  <h4>{t("Support", "సహాయం")}</h4>
+                  <h4>{t("My Account", "నా అకౌంట్")}</h4>
                   <ul>
-                    <li>support@vnatural.com</li>
-                    <li>+91 99001 12233</li>
-                    <li><button onClick={() => setActivePortal("admin")} style={{ opacity: 0.5, fontSize: "0.8rem" }}>Admin Portal</button></li>
+                    <li><button onClick={() => setCustomerPage("profile")}>{t("My Orders", "నా ఆర్డర్లు")}</button></li>
+                    <li><button onClick={() => setCustomerPage("profile")}>{t("Wishlist", "విష్‌లిస్ట్")}</button></li>
+                    <li><button onClick={() => setCustomerPage("profile")}>{t("Track Order", "ఆర్డర్ ట్రాక్")}</button></li>
+                    <li><button onClick={() => setCustomerPage("profile")}>{t("Account Details", "అకౌంట్ వివరాలు")}</button></li>
                   </ul>
+                </div>
+
+                {/* Download App col */}
+                <div className="footer-col">
+                  <h4>{t("Download Our App", "యాప్ డౌన్‌లోడ్")}</h4>
+                  <div className="footer-app-row">
+                    <div className="footer-app-badge">
+                      <span className="footer-app-badge-icon">🍎</span>
+                      <div className="footer-app-badge-text">
+                        <span className="footer-app-badge-sub">Download on the</span>
+                        <span className="footer-app-badge-name">App Store</span>
+                      </div>
+                    </div>
+                    <div className="footer-app-badge">
+                      <span className="footer-app-badge-icon">▶</span>
+                      <div className="footer-app-badge-text">
+                        <span className="footer-app-badge-sub">Get it on</span>
+                        <span className="footer-app-badge-name">Google Play</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div style={{ marginTop: "16px", fontSize: "0.8rem", color: "var(--c-text-muted)" }}>
+                    <div>support@vnatural.com</div>
+                    <div style={{ marginTop: "4px" }}>+91 99001 12233</div>
+                    <div style={{ marginTop: "8px" }}>
+                      <button
+                        onClick={() => setActivePortal("admin")}
+                        style={{ opacity: 0.45, fontSize: "0.76rem", color: "var(--c-text-subtle)" }}
+                      >Admin Portal</button>
+                    </div>
+                  </div>
                 </div>
               </div>
+
+              {/* Footer bottom */}
               <div className="footer-bottom">
                 <span>© 2026 VNatural Organic Sourcing Platform. All rights reserved.</span>
-                <span style={{ color: "var(--c-primary)", fontSize: "0.8rem", fontWeight: "600" }}>🌿 100% Organic · Farm to Table</span>
+                <div style={{ display: "flex", gap: "16px" }}>
+                  <button style={{ color: "var(--c-text-subtle)", fontSize: "0.8rem", cursor: "pointer" }}>
+                    {t("Privacy Policy", "గోప్యతా విధానం")}
+                  </button>
+                  <button style={{ color: "var(--c-text-subtle)", fontSize: "0.8rem", cursor: "pointer" }}>
+                    {t("Terms & Conditions", "నిబంధనలు")}
+                  </button>
+                  <span style={{ color: "var(--c-primary)", fontWeight: "600" }}>🌿 100% Organic</span>
+                </div>
               </div>
             </div>
           </footer>

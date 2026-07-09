@@ -133,7 +133,7 @@ export const AiAssistantWidget = () => {
                         display: "flex",
                         alignItems: "center",
                         gap: "8px",
-                        backgroundColor: "#fff",
+                        backgroundColor: "var(--c-bg-pure)",
                         padding: "6px",
                         borderRadius: "8px",
                         border: "1px solid var(--c-border)"
@@ -176,7 +176,7 @@ export const AiAssistantWidget = () => {
                     </span>
                     {msg.recipes.map((rec) => (
                       <div key={rec.id} style={{
-                        backgroundColor: "#fff",
+                        backgroundColor: "var(--c-bg-pure)",
                         padding: "6px 10px",
                         borderRadius: "8px",
                         border: "1px solid var(--c-border)",

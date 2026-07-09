@@ -245,7 +245,7 @@ export const Checkout = ({ setPage }) => {
                   </div>
                 ) : (
                   /* SIMULATED ONLINE PAYMENT GATEWAY PANEL */
-                  <div style={{ padding: "20px", border: "1.5px solid var(--c-accent)", borderRadius: "12px", backgroundColor: "#fff", textAlign: "center" }}>
+                  <div style={{ padding: "20px", border: "1.5px solid var(--c-accent)", borderRadius: "12px", backgroundColor: "var(--c-bg-pure)", textAlign: "center" }}>
                     
                     {/* A. PhonePe Screen */}
                     {paymentMethod === "PhonePe" && (
@@ -379,7 +379,7 @@ export const Checkout = ({ setPage }) => {
 
           {/* Cart summary panel */}
           <div>
-            <div style={{ backgroundColor: "#fff", border: "1px solid var(--c-border)", borderRadius: "16px", padding: "20px" }}>
+            <div style={{ backgroundColor: "var(--c-bg-pure)", border: "1px solid var(--c-border)", borderRadius: "16px", padding: "20px" }}>
               <h3 style={{ fontSize: "1.1rem", fontWeight: "700", borderBottom: "1.5px solid var(--c-border)", paddingBottom: "10px", marginBottom: "16px" }}>
                 {t("Review Your Order", "మీ ఆర్డర్ సరుకులు")}
               </h3>
@@ -451,7 +451,7 @@ export const Checkout = ({ setPage }) => {
 
           {/* Premium Invoice Receipt */}
           <div style={{
-            backgroundColor: "#fff",
+            backgroundColor: "var(--c-bg-pure)",
             border: "1.5px solid var(--c-border)",
             borderRadius: "16px",
             padding: "24px",

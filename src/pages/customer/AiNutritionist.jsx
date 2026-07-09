@@ -85,7 +85,7 @@ export const AiNutritionist = () => {
       <div style={{ display: "grid", gridTemplateColumns: "300px 1fr", gap: "30px", height: "550px" }}>
         {/* Left column: prompt shortcuts */}
         <aside style={{
-          backgroundColor: "#fff",
+          backgroundColor: "var(--c-bg-pure)",
           border: "1px solid var(--c-border)",
           borderRadius: "16px",
           padding: "20px",
@@ -134,7 +134,7 @@ export const AiNutritionist = () => {
 
         {/* Right column: Chat timelines */}
         <div style={{
-          backgroundColor: "#fff",
+          backgroundColor: "var(--c-bg-pure)",
           border: "1px solid var(--c-border)",
           borderRadius: "16px",
           display: "flex",
@@ -146,7 +146,7 @@ export const AiNutritionist = () => {
             padding: "16px 20px",
             borderBottom: "1.5px solid var(--c-border)",
             backgroundColor: "var(--c-primary)",
-            color: "#fff",
+            color: "#000",
             display: "flex",
             alignItems: "center",
             gap: "8px"
@@ -251,7 +251,7 @@ export const AiNutritionist = () => {
                 <div style={{ width: "32px", height: "32px", borderRadius: "50%", backgroundColor: "var(--c-primary)", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center" }}>
                   <Sparkles size={14} />
                 </div>
-                <div style={{ backgroundColor: "#fff", padding: "12px 16px", borderRadius: "12px", borderBottomLeftRadius: "2px", boxShadow: "var(--shadow-sm)", fontSize: "0.95rem" }}>
+                <div style={{ backgroundColor: "var(--c-bg-card)", color: "var(--c-text)", border: "1px solid var(--c-border-subtle)", padding: "12px 16px", borderRadius: "12px", borderBottomLeftRadius: "2px", boxShadow: "var(--shadow-sm)", fontSize: "0.95rem" }}>
                   Typing...
                 </div>
               </div>

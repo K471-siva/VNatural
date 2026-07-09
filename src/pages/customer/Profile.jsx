@@ -421,7 +421,7 @@ export const Profile = ({ setPage, setSelectedProductId }) => {
                     border: "1px solid var(--c-border)",
                     padding: "16px",
                     borderRadius: "10px",
-                    backgroundColor: "#fff"
+                    backgroundColor: "var(--c-bg-pure)"
                   }}>
                     <div className="flex justify-between align-center" style={{ marginBottom: "10px", borderBottom: "1px solid var(--c-border)", paddingBottom: "8px" }}>
                       <div>

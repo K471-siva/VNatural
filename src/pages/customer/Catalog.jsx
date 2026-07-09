@@ -91,7 +91,7 @@ export const Catalog = ({ setPage, setSelectedProductId }) => {
       <div style={{ display: "grid", gridTemplateColumns: "280px 1fr", gap: "30px" }}>
         {/* Sidebar Filters */}
         <aside style={{
-          backgroundColor: "#fff",
+          backgroundColor: "var(--c-bg-pure)",
           border: "1px solid var(--c-border)",
           borderRadius: "16px",
           padding: "20px",
@@ -216,7 +216,7 @@ export const Catalog = ({ setPage, setSelectedProductId }) => {
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            backgroundColor: "#fff",
+            backgroundColor: "var(--c-bg-pure)",
             border: "1px solid var(--c-border)",
             borderRadius: "12px",
             padding: "12px 20px",
@@ -230,7 +230,7 @@ export const Catalog = ({ setPage, setSelectedProductId }) => {
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                style={{ border: "1px solid var(--c-border)", padding: "4px 8px", borderRadius: "6px", backgroundColor: "#fff", fontSize: "0.85rem" }}
+                style={{ border: "1px solid var(--c-border)", padding: "4px 8px", borderRadius: "6px", backgroundColor: "var(--c-bg-pure)", color: "var(--c-text)", fontSize: "0.85rem" }}
               >
                 <option value="rating">{t("Highest Rated", "రేటింగ్ ఆధారంగా")}</option>
                 <option value="price-low">{t("Price: Low to High", "ధర: తక్కువ నుండి ఎక్కువ")}</option>
@@ -328,7 +328,7 @@ export const Catalog = ({ setPage, setSelectedProductId }) => {
               })}
             </div>
           ) : (
-            <div style={{ textAlign: "center", padding: "60px", backgroundColor: "#fff", borderRadius: "16px", border: "1px solid var(--c-border)" }}>
+            <div style={{ textAlign: "center", padding: "60px", backgroundColor: "var(--c-bg-pure)", borderRadius: "16px", border: "1px solid var(--c-border)" }}>
               <HelpCircle size={40} color="var(--c-text-muted)" style={{ marginBottom: "12px" }} />
               <h3>{t("No products match your filters", "ఎలాంటి ఫలితాలు లభించలేదు")}</h3>
               <p style={{ color: "var(--c-text-muted)", fontSize: "0.9rem" }}>{t("Try clearing some active filters or modifying search query.", "కొన్ని ఫిల్టర్లను తొలగించి మళ్లీ ప్రయత్నించండి.")}</p>
@@ -344,7 +344,7 @@ export const Catalog = ({ setPage, setSelectedProductId }) => {
           bottom: "80px",
           left: "50%",
           transform: "translateX(-50%)",
-          backgroundColor: "#fff",
+          backgroundColor: "var(--c-bg-pure)",
           borderRadius: "16px",
           border: "1.5px solid var(--c-accent)",
           boxShadow: "var(--shadow-lg)",

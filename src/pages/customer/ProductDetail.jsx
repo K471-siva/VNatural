@@ -92,7 +92,7 @@ export const ProductDetail = ({ productId, setPage, setSelectedProductId }) => {
 
           {/* Sourcing Info Box */}
           <div style={{
-            backgroundColor: "#fff",
+            backgroundColor: "var(--c-bg-pure)",
             border: "1px solid var(--c-border)",
             borderRadius: "12px",
             padding: "20px",
@@ -339,7 +339,7 @@ export const ProductDetail = ({ productId, setPage, setSelectedProductId }) => {
               alignItems: "center",
               border: "1.5px solid var(--c-border)",
               borderRadius: "8px",
-              backgroundColor: "#fff"
+              backgroundColor: "var(--c-bg-pure)"
             }}>
               <button
                 onClick={() => setQuantity(Math.max(1, quantity - 1))}
@@ -431,7 +431,7 @@ export const ProductDetail = ({ productId, setPage, setSelectedProductId }) => {
       </div>
 
       {/* Tabs Section */}
-      <div style={{ marginTop: "40px", backgroundColor: "#fff", border: "1px solid var(--c-border)", borderRadius: "16px", padding: "24px" }}>
+      <div style={{ marginTop: "40px", backgroundColor: "var(--c-bg-pure)", border: "1px solid var(--c-border)", borderRadius: "16px", padding: "24px" }}>
         <div style={{ display: "flex", gap: "16px", borderBottom: "1.5px solid var(--c-border)", paddingBottom: "10px", marginBottom: "20px" }}>
           <button 
             onClick={() => setActiveTab("desc")} 

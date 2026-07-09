@@ -145,7 +145,7 @@ export const Recipes = () => {
                       const prod = products.find(p => p.id === pid);
                       if (!prod) return null;
                       return (
-                        <div key={prod.id} style={{ display: "flex", alignItems: "center", gap: "8px", backgroundColor: "#fff", padding: "8px", borderRadius: "8px", border: "1px solid var(--c-border)" }}>
+                        <div key={prod.id} style={{ display: "flex", alignItems: "center", gap: "8px", backgroundColor: "var(--c-bg-pure)", padding: "8px", borderRadius: "8px", border: "1px solid var(--c-border)" }}>
                           <img src={prod.image} alt={prod.name} style={{ width: "32px", height: "32px", borderRadius: "4px", objectFit: "cover" }} />
                           <div style={{ flexGrow: 1, minWidth: 0 }}>
                             <span style={{ fontSize: "0.75rem", fontWeight: "600", display: "block", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
